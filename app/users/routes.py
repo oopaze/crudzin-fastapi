@@ -4,7 +4,6 @@ from typing import List
 from .schemas import UserSchema, ReturnUserSchema
 from .crud import get_users, get_user
 from app.db import session as db
-from app import pwd_context
 from .models import User
 
 route = APIRouter()
@@ -48,7 +47,7 @@ def update_user(user_id: int, user: UserSchema) -> UserSchema:
         raise HTTPException(status_code=404, detail="User not found")
     else:
         user_update.name = user.name
-        user_update.password = pwd_context.hash(user.password)
+        user_update.password = user_update.generate_password(user.password)
         user_update.email = user.email
         user_update.username = user.username
         db.commit()

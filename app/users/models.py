@@ -15,8 +15,11 @@ class User(Model):
     def __init__(self, name:str, username:str, password:str, email:str):
         self.name = name
         self.username = username
-        self.password = pwd_context.hash(password)
+        self.password = self.generate_password(password) 
         self.email = email
+
+    def generate_password(password):
+        return pwd_context.hash(password)
 
     def __repr__(self) -> str:
         return f"< User - {self.name} >"
